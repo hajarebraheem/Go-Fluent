@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+{% load crispy_forms_tags%}
+{% if messages %}
+<ul class="messages">
+    {% for message in messages %}
+    <li {% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+    {% endfor %}
+</ul>
+{% endif %}
+
+<div class="container mt-5 form" style="width: 50%;">
+    <h1 style="text-align: center">Profile</h1>
+    <div class="row justify-content-center mt-5" style="background-color: #A1B5D8; border-radius: 10px; padding: 30px;">
+        <div class="col-md-11">
+            <h4> {{user.first_name}} {{user.last_name}}</h4>
+            <p>Username : {{user.username}}</p>
+            <p>Email : {{user.email}}</p>
+        </div>
+        
+        <hr>
+        
+        <div class="col">
+            <form method='POST' enctype="multipart/form-data">
+                {%csrf_token%}
+                {{u_form|crispy}}
+                {{p_form|crispy}}
+                <!-- <p>Goal Language : </p> When user selecte a language and start its lessons -->
+                <div class="column" style="text-align: center;">
+                    <button type='submit' class="btn user" style="color: #FFFCF7; border-color: #FFFCF7;">Update Profile</button>
+                    <a type="button" class="btn user" style="color: #FFFCF7; border-color: #FFFCF7;" href="{% url 'PasswordsChangeView' pk=user.id %}">Change Password</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(document).ready(function(){
+    $('.messages').delay(5000).fadeOut();
+});
+</script>
+{% endblock  %}
